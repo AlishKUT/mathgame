@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблица умножения 🌟</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --yellow: #FFD93D;
+            --orange: #FF6B35;
+            --pink: #FF4D6D;
+            --purple: #845EC2;
+            --blue: #0089BA;
+            --green: #00C897;
+            --light: #FFF9F0;
+            --card-bg: #FFFFFF;
+            --shadow: 0 8px 32px rgba(132, 94, 194, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating background shapes */
+        .bg-shapes {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.12;
+            animation: float linear infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 180px;
+            height: 180px;
+            background: var(--yellow);
+            top: -40px;
+            left: -50px;
+            animation-duration: 18s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            background: var(--pink);
+            top: 10%;
+            right: -30px;
+            animation-duration: 14s;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 220px;
+            height: 220px;
+            background: var(--blue);
+            bottom: -60px;
+            left: 10%;
+            animation-duration: 20s;
+            animation-delay: -9s;
+        }
+
+        .shape:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            background: var(--green);
+            bottom: 15%;
+            right: 5%;
+            animation-duration: 12s;
+            animation-delay: -3s;
+        }
+
+        .shape:nth-child(5) {
+            width: 80px;
+            height: 80px;
+            background: var(--purple);
+            top: 40%;
+            left: 2%;
+            animation-duration: 16s;
+            animation-delay: -7s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            33% {
+                transform: translateY(-30px) rotate(120deg);
+            }
+
+            66% {
+                transform: translateY(15px) rotate(240deg);
+            }
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 20px 16px 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        /* ── Language switcher ── */
+        .lang-switcher {
+            align-self: flex-end;
+            display: flex;
+            background: #fff;
+            border-radius: 50px;
+            padding: 4px;
+            box-shadow: var(--shadow);
+            gap: 4px;
+        }
+
+        .lang-btn {
+            border: none;
+            cursor: pointer;
+            padding: 7px 18px;
+            border-radius: 50px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: .88rem;
+            transition: background .2s, color .2s, transform .15s;
+            background: transparent;
+            color: #aaa;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--purple), #A855F7);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(1.9rem, 8vw, 2.9rem);
+            background: linear-gradient(135deg, var(--orange), var(--pink), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        header p {
+            font-size: .95rem;
+            color: #888;
+            margin-top: 4px;
+            font-weight: 700;
+        }
+
+        /* Score bar */
+        .score-bar {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .score-card {
+            flex: 1;
+            border-radius: 20px;
+            padding: 14px 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform .2s;
+        }
+
+        .score-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .score-card.correct {
+            background: linear-gradient(135deg, #00C897, #00A3CC);
+            color: #fff;
+        }
+
+        .score-card.wrong {
+            background: linear-gradient(135deg, #FF4D6D, #FF6B35);
+            color: #fff;
+        }
+
+        .score-card .label {
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            opacity: .85;
+        }
+
+        .score-card .number {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+
+        /* Main card */
+        .card {
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 32px 28px 26px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--yellow), var(--orange), var(--pink), var(--purple), var(--blue), var(--green));
+        }
+
+        .stars {
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+        }
+
+        /* Task */
+        .task {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(3rem, 14vw, 5rem);
+            color: var(--purple);
+            letter-spacing: 2px;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .task.pop {
+            animation: pop .35s cubic-bezier(.36, 1.5, .5, 1);
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(.7) rotate(-5deg);
+                opacity: .5;
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* Input */
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .equals {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            color: #ccc;
+        }
+
+        #answer-input {
+            flex: 1;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2rem;
+            text-align: center;
+            border: 4px solid #E8E0F8;
+            border-radius: 20px;
+            padding: 12px 16px;
+            outline: none;
+            color: var(--purple);
+            background: #F9F6FF;
+            transition: border-color .2s, box-shadow .2s, background .2s;
+            width: 100%;
+        }
+
+        #answer-input:focus {
+            border-color: var(--purple);
+            box-shadow: 0 0 0 4px rgba(132, 94, 194, .15);
+            background: #fff;
+        }
+
+        #answer-input.shake {
+            animation: shake .4s;
+            border-color: var(--pink);
+            background: #FFF0F3;
+        }
+
+        #answer-input.glow {
+            border-color: var(--green);
+            background: #F0FFF9;
+            box-shadow: 0 0 0 4px rgba(0, 200, 151, .2);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-10px);
+            }
+
+            40% {
+                transform: translateX(10px);
+            }
+
+            60% {
+                transform: translateX(-6px);
+            }
+
+            80% {
+                transform: translateX(6px);
+            }
+        }
+
+        /* Single action button */
+        .btn-action {
+            width: 100%;
+            border: none;
+            border-radius: 20px;
+            padding: 18px 12px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, .13);
+            position: relative;
+            top: 0;
+            transition: filter .15s, box-shadow .15s;
+        }
+
+        .btn-action:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, .12);
+            top: 4px;
+        }
+
+        .btn-action.mode-check {
+            background: linear-gradient(135deg, var(--purple), #A855F7);
+            color: #fff;
+        }
+
+        .btn-action.mode-next {
+            background: linear-gradient(135deg, var(--blue), var(--green));
+            color: #fff;
+        }
+
+        .btn-action:hover {
+            filter: brightness(1.08);
+        }
+
+        /* Button slide-switch animation */
+        .btn-action.switch {
+            animation: btnSwitch .3s cubic-bezier(.36, 1.4, .5, 1);
+        }
+
+        @keyframes btnSwitch {
+            0% {
+                transform: scale(.92);
+                opacity: .7;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Feedback */
+        .feedback {
+            width: 100%;
+            min-height: 64px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 14px 18px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.05rem;
+            opacity: 0;
+            transition: opacity .3s, transform .3s;
+            transform: translateY(8px);
+        }
+
+        .feedback.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feedback.correct {
+            background: #E8FFF6;
+            color: #00875A;
+            border: 3px solid #00C897;
+        }
+
+        .feedback.wrong {
+            background: #FFF0F3;
+            color: #C0003C;
+            border: 3px solid #FF4D6D;
+        }
+
+        .feedback .big {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+        }
+
+        .feedback .explain {
+            font-size: .88rem;
+            color: #555;
+            font-weight: 700;
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            border-radius: 2px;
+            animation: confetti-fall 1.2s ease-in forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg) scale(.5);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                padding: 26px 14px 18px;
+            }
+
+            .btn-action {
+                font-size: 1rem;
+                padding: 16px 10px;
+            }
+
+            .lang-btn {
+                padding: 6px 12px;
+                font-size: .8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <div class="wrapper">
+
+        <!-- Language switcher -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" id="btn-ru" onclick="setLang('ru')">🇷🇺 Русский</button>
+            <button class="lang-btn" id="btn-kz" onclick="setLang('kz')">🇰🇿 Қазақша</button>
+        </div>
+
+        <header>
+            <h1 id="title">Таблица умножения</h1>
+            <p id="subtitle">Тренируйся и становись умнее каждый день! 🚀</p>
+        </header>
+
+        <div class="score-bar">
+            <div class="score-card correct">
+                <div class="label" id="label-correct">✅ Верно</div>
+                <div class="number" id="correct-count">0</div>
+            </div>
+            <div class="score-card wrong">
+                <div class="label" id="label-wrong">❌ Ошибки</div>
+                <div class="number" id="wrong-count">0</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="stars" id="stars">⭐⭐⭐</div>
+            <div class="task" id="task">? × ?</div>
+
+            <div class="input-row">
+                <span class="equals">=</span>
+                <input type="number" id="answer-input" placeholder="?" autocomplete="off" min="0" max="999">
+            </div>
+
+            <!-- ONE button that switches between Check ↔ Next -->
+            <button class="btn-action mode-check" id="btn-action" onclick="handleAction()">
+                🔍 Проверить
+            </button>
+
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // ── Translations ───────────────────────────────────────────────────────────
+        const I18N = {
+            ru: {
+                title: 'Таблица умножения',
+                subtitle: 'Тренируйся и становись умнее каждый день! 🚀',
+                labelCorrect: '✅ Верно',
+                labelWrong: '❌ Ошибки',
+                btnCheck: '🔍 Проверить',
+                btnNext: '▶ Следующий',
+                correctMsg: '🎉 Правильно! Молодец!',
+                wrongTitle: '😊 Не страшно, смотри:',
+            },
+            kz: {
+                title: 'Көбейту кестесі',
+                subtitle: 'Жаттығып, күн сайын ақылдырақ бол! 🚀',
+                labelCorrect: '✅ Дұрыс',
+                labelWrong: '❌ Қате',
+                btnCheck: '🔍 Тексеру',
+                btnNext: '▶ Келесі',
+                correctMsg: '🎉 Дұрыс! Жарайсың!',
+                wrongTitle: '😊 Ештеңе етпейді, қара:'
+            }
+        };
+
+        let lang = 'ru';
+
+        function t(key) { return I18N[lang][key]; }
+
+        function setLang(l) {
+            lang = l;
+            document.getElementById('btn-ru').classList.toggle('active', l === 'ru');
+            document.getElementById('btn-kz').classList.toggle('active', l === 'kz');
+            document.getElementById('title').textContent = t('title');
+            document.getElementById('subtitle').textContent = t('subtitle');
+            document.getElementById('label-correct').textContent = t('labelCorrect');
+            document.getElementById('label-wrong').textContent = t('labelWrong');
+
+            // Update button label
+            btnAction.textContent = answered ? t('btnNext') : t('btnCheck');
+
+            // Refresh visible feedback
+            if (answered) showFeedback(lastCorrect);
+            updateStars();
+        }
+
+        // ── State ──────────────────────────────────────────────────────────────────
+        let a = 1, b = 1;
+        let correctCount = 0, wrongCount = 0;
+        let answered = false, lastCorrect = false;
+
+        const taskEl = document.getElementById('task');
+        const inputEl = document.getElementById('answer-input');
+        const feedbackEl = document.getElementById('feedback');
+        const correctEl = document.getElementById('correct-count');
+        const wrongEl = document.getElementById('wrong-count');
+        const starsEl = document.getElementById('stars');
+        const btnAction = document.getElementById('btn-action');
+        const confettiCont = document.getElementById('confetti-container');
+
+        const COLORS = ['#FFD93D', '#FF6B35', '#FF4D6D', '#845EC2', '#0089BA', '#00C897', '#F72585', '#4CC9F0'];
+        function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+        function buildExplanation(x, y) {
+            return `${x} × ${y} = ${Array(y).fill(x).join(' + ')} = ${x * y}`;
+        }
+
+        function updateStars() {
+            const total = correctCount + wrongCount;
+            if (total === 0) { starsEl.textContent = '⭐⭐⭐'; return; }
+            const r = correctCount / total;
+            starsEl.textContent = r >= 0.8 ? '🌟🌟🌟' : r >= 0.5 ? '⭐🌟⭐' : '⭐⭐⭐';
+        }
+
+        function showFeedback(isCorrect) {
+            feedbackEl.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+            feedbackEl.innerHTML = isCorrect
+                ? `<div class="big">${t('correctMsg')}</div>`
+                : `<div class="big">${t('wrongTitle')}</div>
+         <div class="explain">${buildExplanation(a, b)}</div>`;
+            feedbackEl.offsetHeight; // trigger reflow
+            feedbackEl.classList.add('show');
+        }
+
+        function spawnConfetti() {
+            confettiCont.innerHTML = '';
+            for (let i = 0; i < 52; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti-piece';
+                el.style.cssText = `
+        left:${rand(5, 95)}%;top:${rand(-10, 10)}%;
+        background:${COLORS[rand(0, COLORS.length - 1)]};
+        width:${rand(8, 16)}px;height:${rand(8, 16)}px;
+        border-radius:${rand(0, 1) ? '50%' : '2px'};
+        animation-delay:${rand(0, 600) / 1000}s;
+        animation-duration:${rand(900, 1400) / 1000}s;`;
+                confettiCont.appendChild(el);
+            }
+            setTimeout(() => confettiCont.innerHTML = '', 2200);
+        }
+
+        function switchBtn(toMode) {
+            btnAction.classList.remove('switch');
+            void btnAction.offsetWidth;
+            btnAction.classList.add('switch');
+
+            if (toMode === 'next') {
+                btnAction.classList.replace('mode-check', 'mode-next');
+                btnAction.textContent = t('btnNext');
+            } else {
+                btnAction.classList.replace('mode-next', 'mode-check');
+                btnAction.textContent = t('btnCheck');
+            }
+        }
+
+        // ── One button handler ─────────────────────────────────────────────────────
+        function handleAction() {
+            if (!answered) {
+                checkAnswer();
+            } else {
+                nextQuestion();
+            }
+        }
+
+        function checkAnswer() {
+            const userVal = inputEl.value.trim();
+            if (userVal === '') { inputEl.focus(); return; }
+
+            const userAnswer = parseInt(userVal, 10);
+            const isCorrect = userAnswer === a * b;
+
+            answered = true;
+            lastCorrect = isCorrect;
+
+            if (isCorrect) {
+                correctCount++;
+                correctEl.textContent = correctCount;
+                inputEl.classList.add('glow');
+                spawnConfetti();
+            } else {
+                wrongCount++;
+                wrongEl.textContent = wrongCount;
+                inputEl.classList.add('shake');
+                setTimeout(() => inputEl.classList.remove('shake'), 500);
+            }
+
+            updateStars();
+            showFeedback(isCorrect);
+            inputEl.disabled = true;
+            switchBtn('next');
+        }
+
+        function nextQuestion() {
+            a = rand(2, 9);
+            b = rand(2, 9);
+
+            taskEl.classList.remove('pop');
+            void taskEl.offsetWidth;
+            taskEl.textContent = `${a} × ${b}`;
+            taskEl.classList.add('pop');
+
+            inputEl.value = '';
+            inputEl.className = '';
+            inputEl.disabled = false;
+            inputEl.focus();
+
+            feedbackEl.className = 'feedback';
+            feedbackEl.innerHTML = '';
+            answered = false;
+
+            switchBtn('check');
+        }
+
+        // Enter key support
+        inputEl.addEventListener('keydown', e => {
+            if (e.key === 'Enter') handleAction();
+        });
+
+        // Init
+        nextQuestion();
+    </script>
+</body>
+
+</html>
