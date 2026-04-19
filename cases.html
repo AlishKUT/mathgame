@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Падежи русского языка 📚</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --yellow: #FFD93D;
+            --orange: #FF6B35;
+            --pink: #FF4D6D;
+            --purple: #845EC2;
+            --blue: #0089BA;
+            --green: #00C897;
+            --light: #FFF9F0;
+            --card-bg: #FFFFFF;
+            --shadow: 0 8px 32px rgba(132, 94, 194, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating background shapes */
+        .bg-shapes {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.12;
+            animation: float linear infinite;
+        }
+
+        .shape:nth-child(1) { width: 180px; height: 180px; background: var(--yellow); top: -40px; left: -50px; animation-duration: 18s; }
+        .shape:nth-child(2) { width: 120px; height: 120px; background: var(--pink); top: 10%; right: -30px; animation-duration: 14s; animation-delay: -5s; }
+        .shape:nth-child(3) { width: 220px; height: 220px; background: var(--blue); bottom: -60px; left: 10%; animation-duration: 20s; animation-delay: -9s; }
+        .shape:nth-child(4) { width: 100px; height: 100px; background: var(--green); bottom: 15%; right: 5%; animation-duration: 12s; animation-delay: -3s; }
+        .shape:nth-child(5) { width: 80px; height: 80px; background: var(--purple); top: 40%; left: 2%; animation-duration: 16s; animation-delay: -7s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(15px) rotate(240deg); }
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 20px 16px 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        /* ── Main Navigation ── */
+        .main-nav {
+            display: flex;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            padding: 4px;
+            box-shadow: var(--shadow);
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            margin-bottom: 4px;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: .95rem;
+            color: #888;
+            transition: all .2s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--orange), var(--pink));
+            color: white;
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(255, 77, 109, 0.2);
+        }
+
+        .nav-btn:not(.active):hover {
+            color: var(--pink);
+            background: rgba(255, 77, 109, 0.1);
+        }
+
+        .btn-toggle-theory {
+            background: #F9F6FF;
+            color: var(--purple);
+            border: 2px solid #E8E0F8;
+            border-radius: 50px;
+            padding: 8px 18px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+            align-self: flex-end;
+            margin-bottom: -4px;
+        }
+        .btn-toggle-theory:hover {
+            background: #E8E0F8;
+            transform: scale(1.02);
+        }
+
+        .theory-block {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            border: 4px solid #E8E0F8;
+            animation: slideDown 0.3s ease-out;
+            overflow: hidden;
+            display: none;
+        }
+
+        .theory-block h3 {
+            text-align: center;
+            color: var(--purple);
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        .theory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .t-item {
+            background: #F9F6FF;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #555;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .t-item strong {
+            color: var(--purple);
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header { text-align: center; }
+        header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(2.4rem, 9vw, 3.2rem);
+            background: linear-gradient(135deg, var(--orange), var(--pink), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+        header p { font-size: 1rem; color: #888; margin-top: 6px; font-weight: 700; }
+
+        .score-bar { display: flex; gap: 16px; width: 100%; }
+        .score-card { flex: 1; border-radius: 20px; padding: 14px 10px; text-align: center; box-shadow: var(--shadow); transition: transform .2s; }
+        .score-card:hover { transform: translateY(-2px); }
+        .score-card.correct { background: linear-gradient(135deg, #00C897, #00A3CC); color: #fff; }
+        .score-card.wrong { background: linear-gradient(135deg, #FF4D6D, #FF6B35); color: #fff; }
+        .score-card .label { font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
+        .score-card .number { font-family: 'Fredoka One', cursive; font-size: 2.4rem; line-height: 1; }
+
+        .card { width: 100%; background: var(--card-bg); border-radius: 32px; padding: 32px 28px 26px; box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 8px; background: linear-gradient(90deg, var(--yellow), var(--orange), var(--pink), var(--purple), var(--blue), var(--green)); }
+        
+        .stars { font-size: 1.4rem; letter-spacing: 4px; }
+
+        .task {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+            color: var(--purple);
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .task.pop { animation: pop .35s cubic-bezier(.36, 1.5, .5, 1); }
+        @keyframes pop { 0% { transform: scale(.8); opacity: .5; } 100% { transform: scale(1); opacity: 1; } }
+
+        .options-row {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .btn-option {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.4rem;
+            padding: 16px;
+            border: 4px solid #E8E0F8;
+            background: #F9F6FF;
+            color: var(--purple);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all .2s;
+            width: 100%;
+            box-shadow: 0 4px 0px rgba(132, 94, 194, 0.1);
+        }
+
+        .btn-option:not(:disabled):hover {
+            border-color: var(--purple);
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(132, 94, 194, 0.15);
+        }
+        
+        .btn-option:not(:disabled):active {
+            transform: translateY(2px);
+            box-shadow: 0 0px 0px rgba(132, 94, 194, 0);
+        }
+
+        .btn-option:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        .btn-option.correct {
+            background: #00C897;
+            color: white;
+            border-color: #00875A;
+            box-shadow: 0 4px 0px #006041;
+            transform: scale(1.02);
+            z-index: 2;
+        }
+
+        .btn-option.wrong {
+            background: #FF4D6D;
+            color: white;
+            border-color: #C0003C;
+            box-shadow: 0 4px 0px #800028;
+            animation: shake .4s;
+        }
+
+        .btn-action {
+            width: 100%;
+            border: none;
+            border-radius: 20px;
+            padding: 18px 12px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, .13);
+            position: relative;
+            top: 0;
+            transition: filter .15s, box-shadow .15s;
+            display: none;
+        }
+
+        .btn-action.mode-next {
+            background: linear-gradient(135deg, var(--blue), var(--green));
+            color: #fff;
+            display: block;
+            animation: pop 0.3s;
+        }
+
+        .btn-action:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, .12);
+            top: 4px;
+        }
+
+        .feedback {
+            width: 100%;
+            min-height: 64px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 18px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.05rem;
+            opacity: 0;
+            transition: opacity .3s, transform .3s;
+            transform: translateY(8px);
+        }
+
+        .feedback.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feedback.correct {
+            background: #E8FFF6;
+            color: #00875A;
+            border: 3px solid #00C897;
+        }
+
+        .feedback.wrong {
+            background: #FFF0F3;
+            color: #C0003C;
+            border: 3px solid #FF4D6D;
+        }
+
+        .feedback .big {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.4rem;
+        }
+
+        .feedback .explain {
+            font-size: .95rem;
+            color: #444;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 999; overflow: hidden; }
+        .confetti-piece { position: absolute; border-radius: 2px; animation: confetti-fall 1.2s ease-in forwards; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-20px) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg) scale(.5); opacity: 0; }
+        }
+
+        @media (max-width: 400px) {
+            .card { padding: 26px 14px 18px; }
+            .btn-action { font-size: 1rem; padding: 16px 10px; }
+            .btn-option { font-size: 1.2rem; padding: 12px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <div class="wrapper">
+        <nav class="main-nav">
+            <a href="index.html" class="nav-btn">🕹️ Математика</a>
+            <a href="cases.html" class="nav-btn active">📚 Падежи</a>
+        </nav>
+
+        <button class="btn-toggle-theory" onclick="toggleTheory()" id="btn-toggle-theory">
+            💡 Памятка падежей (показать)
+        </button>
+
+        <div class="theory-block" id="theory-block">
+            <h3>Памятка падежей</h3>
+            <div class="theory-grid">
+                <div class="t-item"><strong>Именительный</strong>кто? что?</div>
+                <div class="t-item"><strong>Родительный</strong>кого? чего?</div>
+                <div class="t-item"><strong>Дательный</strong>кому? чему?</div>
+                <div class="t-item"><strong>Винительный</strong>кого? что?</div>
+                <div class="t-item"><strong>Творительный</strong>кем? чем?</div>
+                <div class="t-item"><strong>Предложный</strong>о ком? о чем?</div>
+            </div>
+        </div>
+
+        <header>
+            <h1 id="title">Падежи</h1>
+            <p id="subtitle">Учимся писать правильно! ✍️</p>
+        </header>
+
+        <div class="score-bar">
+            <div class="score-card correct">
+                <div class="label">✅ Верно</div>
+                <div class="number" id="correct-count">0</div>
+            </div>
+            <div class="score-card wrong">
+                <div class="label">❌ Ошибки</div>
+                <div class="number" id="wrong-count">0</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="stars" id="stars">⭐⭐⭐</div>
+            <div class="task" id="task">Загрузка...</div>
+
+            <div class="options-row" id="options-container">
+            </div>
+
+            <button class="btn-action" id="btn-action" onclick="nextQuestion()">
+                ▶ Следующий
+            </button>
+
+            <div class="feedback" id="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        const QUESTIONS = [
+            // Именительный
+            { text: "Это моя ... (книга)", options: ["книга", "книгу", "книгой"], correctIndex: 0, explanation: "Подлежащее отвечает на вопрос (кто? что?) — это именительный падеж → книга" },
+            { text: "По небу плывет ... (облако)", options: ["облаке", "облако", "облака"], correctIndex: 1, explanation: "Подлежащее (кто? что?) — именительный падеж → облако" },
+            { text: "Там бежит ... (кот)", options: ["кота", "кот", "коту"], correctIndex: 1, explanation: "Подлежащее (кто? что?) — именительный падеж → кот" },
+            { text: "На столе лежит ... (ручка)", options: ["ручке", "ручкой", "ручка"], correctIndex: 2, explanation: "Подлежащее (кто? что?) — именительный падеж → ручка" },
+            
+            // Родительный
+            { text: "Нет моей ... (мама)", options: ["мама", "мамы", "маме"], correctIndex: 1, explanation: "Слово «нет» требует родительного падежа (кого? чего?) → мамы" },
+            { text: "У меня нет ... (брат)", options: ["брата", "брату", "братья"], correctIndex: 0, explanation: "Слово «нет» требует родительного падежа (кого? чего?) → брата" },
+            { text: "Машина стоит около ... (дом)", options: ["дому", "дома", "домом"], correctIndex: 1, explanation: "Предлог «около» требует родительного падежа (кого? чего?) → дома" },
+            { text: "Сок из ... (яблоко)", options: ["яблоку", "яблоком", "яблока"], correctIndex: 2, explanation: "Предлог «из» (кого? чего?) — родительный падеж → яблока" },
+            { text: "Кусок ... (торт)", options: ["торте", "торт", "торта"], correctIndex: 2, explanation: "Часть целого (чего?) — родительный падеж → торта" },
+
+            // Дательный
+            { text: "Я иду к ... (мама)", options: ["мама", "мамы", "маме"], correctIndex: 2, explanation: "Предлог «к» требует дательного падежа (кому? чему?) → маме" },
+            { text: "Дай кость ... (пёс)", options: ["псу", "псам", "псом"], correctIndex: 0, explanation: "Действие направлено (кому? чему?) — дательный падеж → псу" },
+            { text: "Я скучаю по ... (брат)", options: ["брата", "брату", "братом"], correctIndex: 1, explanation: "Предлог «по» требует дательного падежа (кому? чему?) → брату" },
+            { text: "Мы подарили игрушку ... (сестра)", options: ["сестры", "сестрой", "сестре"], correctIndex: 2, explanation: "Действие направлено (кому?) — дательный падеж → сестре" },
+            { text: "Он радуется ... (солнце)", options: ["солнцем", "солнцу", "солнца"], correctIndex: 1, explanation: "Слово «радуется» требует дательного падежа (чему?) → солнцу" },
+
+            // Винительный
+            { text: "Я вижу ... (собака)", options: ["собака", "собаку", "собаке"], correctIndex: 1, explanation: "Слово «вижу» требует винительного падежа (кого? что?) → собаку" },
+            { text: "Он читает ... (книга)", options: ["книгу", "книги", "книгой"], correctIndex: 0, explanation: "Действие переходит на предмет (что?) — винительный падеж → книгу" },
+            { text: "Мы купили ... (молоко)", options: ["молоком", "молока", "молоко"], correctIndex: 2, explanation: "Действие переходит на предмет (что?) — винительный падеж → молоко" },
+            { text: "Он встретил ... (друг)", options: ["друга", "другу", "другом"], correctIndex: 0, explanation: "Действие переходит на лицо (кого?) — винительный падеж → друга" },
+            { text: "Положи на ... (стол)", options: ["столу", "стол", "столом"], correctIndex: 1, explanation: "Направление (на что?) — винительный падеж → стол" },
+
+            // Творительный
+            { text: "Мы гуляем с ... (друг)", options: ["друг", "другом", "другу"], correctIndex: 1, explanation: "Предлог «с» (совместность) требует творительного падежа (с кем?) → с другом" },
+            { text: "Она рисует ... (карандаш)", options: ["карандашом", "карандашу", "карандаша"], correctIndex: 0, explanation: "Действие совершается инструментом (кем? чем?) — творительный падеж → карандашом" },
+            { text: "Птица летит над ... (лес)", options: ["лесу", "лесом", "леса"], correctIndex: 1, explanation: "Предлог «над» требует творительного падежа (чем?) → лесом" },
+            { text: "Я восхищаюсь ... (картина)", options: ["картину", "картиной", "картине"], correctIndex: 1, explanation: "Слово «восхищаюсь» требует творительного падежа (чем?) → картиной" },
+            { text: "Кот спит под ... (кровать)", options: ["кровати", "кроватями", "кроватью"], correctIndex: 2, explanation: "Предлог «под» требует творительного падежа (чем?) → кроватью" },
+
+            // Предложный
+            { text: "Я думаю о ... (лето)", options: ["лето", "лета", "лете"], correctIndex: 2, explanation: "Слово «думаю о» требует предложного падежа (о ком? о чём?) → лете" },
+            { text: "Она мечтает о ... (море)", options: ["моря", "морем", "море"], correctIndex: 2, explanation: "Слово «мечтает о» требует предложного падежа (о чём?) → море" },
+            { text: "Картина висит на ... (стена)", options: ["стеной", "стене", "стену"], correctIndex: 1, explanation: "Предлог «на» (где?) требует предложного падежа (на чём?) → стене" },
+            { text: "Они разговаривают о ... (погода)", options: ["погоде", "погоду", "погодой"], correctIndex: 0, explanation: "Предлог «о» требует предложного падежа (о ком? о чём?) → погоде" },
+            { text: "Мы гуляли в ... (парк)", options: ["парком", "парке", "парку"], correctIndex: 1, explanation: "Предлог «в» (где?) требует предложного падежа (в чём?) → парке" }
+        ];
+
+        let correctCount = 0, wrongCount = 0;
+        let answered = false;
+        let currentQuestion = null;
+
+        const taskEl = document.getElementById('task');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackEl = document.getElementById('feedback');
+        const correctEl = document.getElementById('correct-count');
+        const wrongEl = document.getElementById('wrong-count');
+        const starsEl = document.getElementById('stars');
+        const btnAction = document.getElementById('btn-action');
+        const confettiCont = document.getElementById('confetti-container');
+        const theoryBlock = document.getElementById('theory-block');
+        const btnToggleTheory = document.getElementById('btn-toggle-theory');
+
+        const COLORS = ['#FFD93D', '#FF6B35', '#FF4D6D', '#845EC2', '#0089BA', '#00C897', '#F72585', '#4CC9F0'];
+        function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+        function toggleTheory() {
+            if (theoryBlock.style.display === 'none' || theoryBlock.style.display === '') {
+                theoryBlock.style.display = 'block';
+                btnToggleTheory.innerHTML = '💡 Памятка падежей (скрыть)';
+            } else {
+                theoryBlock.style.display = 'none';
+                btnToggleTheory.innerHTML = '💡 Памятка падежей (показать)';
+            }
+        }
+
+        function updateStars() {
+            const total = correctCount + wrongCount;
+            if (total === 0) { starsEl.textContent = '⭐⭐⭐'; return; }
+            const r = correctCount / total;
+            starsEl.textContent = r >= 0.8 ? '🌟🌟🌟' : r >= 0.5 ? '⭐🌟⭐' : '⭐⭐⭐';
+        }
+
+        function showFeedback(isCorrect) {
+            feedbackEl.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+            feedbackEl.innerHTML = isCorrect
+                ? `<div class="big">🎉 Правильно! Молодец!</div>`
+                : `<div class="big">😊 Не страшно, вспомни правило:</div>
+                   <div class="explain">${currentQuestion.explanation}</div>`;
+            feedbackEl.offsetHeight; // trigger reflow
+            feedbackEl.classList.add('show');
+        }
+
+        function spawnConfetti() {
+            confettiCont.innerHTML = '';
+            for (let i = 0; i < 52; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti-piece';
+                el.style.cssText = `
+                    left:${rand(5, 95)}%;top:${rand(-10, 10)}%;
+                    background:${COLORS[rand(0, COLORS.length - 1)]};
+                    width:${rand(8, 16)}px;height:${rand(8, 16)}px;
+                    border-radius:${rand(0, 1) ? '50%' : '2px'};
+                    animation-delay:${rand(0, 600) / 1000}s;
+                    animation-duration:${rand(900, 1400) / 1000}s;`;
+                confettiCont.appendChild(el);
+            }
+            setTimeout(() => confettiCont.innerHTML = '', 2200);
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            if (answered) return;
+            answered = true;
+
+            const isCorrect = selectedIndex === currentQuestion.correctIndex;
+            
+            // Highlight buttons
+            const buttons = optionsContainer.querySelectorAll('.btn-option');
+            buttons.forEach((btn, index) => {
+                btn.disabled = true;
+                if (index === currentQuestion.correctIndex) {
+                    btn.classList.add('correct');
+                } else if (index === selectedIndex && !isCorrect) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            if (isCorrect) {
+                correctCount++;
+                correctEl.textContent = correctCount;
+                spawnConfetti();
+            } else {
+                wrongCount++;
+                wrongEl.textContent = wrongCount;
+            }
+
+            updateStars();
+            showFeedback(isCorrect);
+            
+            // Show Next button
+            btnAction.classList.add('mode-next');
+        }
+
+        function nextQuestion() {
+            // Pick a random question that is different from current one
+            let nextQ;
+            if (QUESTIONS.length > 1) {
+                do {
+                    nextQ = QUESTIONS[rand(0, QUESTIONS.length - 1)];
+                } while (nextQ === currentQuestion);
+            } else {
+                nextQ = QUESTIONS[0];
+            }
+            currentQuestion = nextQ;
+
+            taskEl.classList.remove('pop');
+            void taskEl.offsetWidth;
+            taskEl.textContent = currentQuestion.text;
+            taskEl.classList.add('pop');
+
+            // Render options
+            optionsContainer.innerHTML = '';
+            currentQuestion.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-option';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            feedbackEl.className = 'feedback';
+            feedbackEl.innerHTML = '';
+            answered = false;
+            
+            // Hide Next button
+            btnAction.classList.remove('mode-next');
+        }
+
+        // Init
+        nextQuestion();
+    </script>
+</body>
+
+</html>
